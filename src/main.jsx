@@ -11,6 +11,6 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={ redux }>
     <BrowserRouter>
       <App />
-    </BrowserRouter>,
+    </BrowserRouter>
   </Provider>
 )
