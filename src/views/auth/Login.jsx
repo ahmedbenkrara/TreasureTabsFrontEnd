@@ -17,14 +17,16 @@ export default function Login(){
         dispatch(setStatus('idle'))
         return () => {
             dispatch(setStatus('idle'))
-            console.log('unmount')
         }
     }, [dispatch])
 
     useEffect(() => {
         if (status == 'success') {
-            // <Navigate to="/register"/>
-            navigate('/register')
+            // navigate('/')
+            // navigate('/', { replace: true })
+            window.location.href = '/'
+            // window.location.reload(true)
+            dispatch(setStatus('idle'))
         }
     }, [status])
 

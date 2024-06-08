@@ -5,25 +5,28 @@ import React, { lazy } from "react"
 
 const Login =  lazy(() => import("../views/auth/Login"))
 const Register =  lazy(() => import("../views/auth/Register"))
-
-//guards
-// import RequireAuth from "../components/auth/RequireAuth"
+import Home from "../views/client/Home"
+import Test from "../views/client/Test"
+import AuthGuard from "../guards/auth/AuthGuard"
 
 export default function Routes(){
+
     let routes = useRoutes([
         {
             path: '/',
-            // element: <RequireAuth component='<h1>Welcome to home page</h1>' role='user' />
-            element: <h1>Welcome to home page <Link to="/login">Login</Link></h1>
+            element: <AuthGuard Component={ Home } role='user' />
+        },
+        {
+            path: '/test',
+            element: <AuthGuard Component={ Test } role='admin' />
         },
         {
             path: '/login',
-            // element: <RequireAuth component={ <Login /> } role='user' shouldBeAuth={ false } />,
-            element: <Login />
+            element: <AuthGuard Component={ Login } role='guest' />
         },
         {
             path: '/register',
-            element: <Register />,
+            element: <AuthGuard Component={ Register } role='guest' />
         },
     ])
     return routes

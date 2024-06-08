@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { register, login } from './actions'
+import { register, login, getUser } from './actions'
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState: {
         errorMessage: null,
-        status: 'idle'
+        status: 'idle',
+        user: null
     },
     reducers: {
         setStatus: (state, action) => {
@@ -15,6 +16,7 @@ export const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
+        //register
         .addCase(register.pending, (state) => {
             state.status = 'loading'
         })
@@ -25,6 +27,7 @@ export const authSlice = createSlice({
             state.status = 'failed'
             state.errorMessage = action.payload
         })
+        //login
         .addCase(login.pending, (state) => {
             state.status = 'loading'
         })
@@ -33,6 +36,20 @@ export const authSlice = createSlice({
         })
         .addCase(login.rejected, (state, action) => {
             state.status = 'failed'
+            state.errorMessage = action.payload
+        })
+        //getUser
+        .addCase(getUser.pending, (state) => {
+
+            state.status = 'loading'
+        })
+        .addCase(getUser.fulfilled, (state, action) => {
+            state.status = 'success'
+            state.user = action.payload
+        })
+        .addCase(getUser.rejected, (state, action) => {
+            state.status = 'failed'
+            state.user = null
             state.errorMessage = action.payload
         })
     }

@@ -1,1 +1,1 @@
-export const BACKEND_ENDPOINT = "http://192.168.1.8:3001/api"
+export const BACKEND_ENDPOINT = "http://127.0.0.1:3001/api"

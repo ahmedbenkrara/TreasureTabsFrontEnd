@@ -27,8 +27,9 @@ export default function Register(){
     useEffect(() => {
         if(status == 'success'){
             navigate('/login')
+            dispatch(setStatus('idle'))
         }
-    }, [dispatch])
+    }, [status])
     
 
     const handleSubmit = (e) => {
