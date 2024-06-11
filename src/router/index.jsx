@@ -1,24 +1,25 @@
-import { useRoutes, Link } from "react-router-dom"
+import { useRoutes } from "react-router-dom"
 import React, { lazy } from "react"
-// import Login from "../views/auth/Login"
-// import Register from "../views/auth/Register"
+
+import AuthGuard from "../guards/auth/AuthGuard"
+import HomeLayout from "../views/client/HomeLayout"
 
 const Login =  lazy(() => import("../views/auth/Login"))
 const Register =  lazy(() => import("../views/auth/Register"))
-import Home from "../views/client/Home"
-import Test from "../views/client/Test"
-import AuthGuard from "../guards/auth/AuthGuard"
+const SocialMedia =  lazy(() => import("../views/client/SocialMedia"))
 
 export default function Routes(){
 
     let routes = useRoutes([
         {
             path: '/',
-            element: <AuthGuard Component={ Home } role='user' />
-        },
-        {
-            path: '/test',
-            element: <AuthGuard Component={ Test } role='admin' />
+            element: <HomeLayout />,
+            children: [
+                {
+                    index: true,
+                    element: <AuthGuard Component={ SocialMedia } role='user' />,
+                },
+            ]
         },
         {
             path: '/login',
@@ -28,6 +29,14 @@ export default function Routes(){
             path: '/register',
             element: <AuthGuard Component={ Register } role='guest' />
         },
+        {
+            path: '/403',
+            element: <h1>403</h1>
+        },
+        {
+            path: '*',
+            element: <h1>404</h1>
+        }
     ])
     return routes
 }

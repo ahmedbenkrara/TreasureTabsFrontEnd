@@ -1,7 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import axios from 'axios'
 import { BACKEND_ENDPOINT } from './../../config/endpoints' 
-axios.defaults.withCredentials = true;
+import { refreshToken } from "../../utils/auth"
+
+axios.defaults.withCredentials = true
+
 export const register = createAsyncThunk(
     'auth/register',
     async (payload, thunkAPI) => {
@@ -41,6 +44,11 @@ export const getUser = createAsyncThunk(
             })
             return res.data.data
         }catch(error){
+            if(error.response.data.errorCode == 403 && error.response.data.message.toLowerCase() == 'access token isn\'t valid !'){
+                const res = await refreshToken()
+                if(res.status == 'success')
+                    return res.user
+            }
             return thunkAPI.rejectWithValue(error.response.data.message)
         }
     }

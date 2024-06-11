@@ -1,33 +1,25 @@
-import { useEffect, useState } from 'react';
-import { BACKEND_ENDPOINT } from './../../config/endpoints';
-import axios from 'axios';
+import { useEffect } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
+
+import { useDispatch, useSelector } from 'react-redux'
+import { getUser } from './../../redux/auth/actions'
+
 export default function AuthGuard({ Component, role }) {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
     const location = useLocation()
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get(`${BACKEND_ENDPOINT}/auth/user`, {
-                    withCredentials: true,
-                });
-                setData(response.data.data);
-            } catch (error) {
-                setData(null);
-            }
-            setLoading(false);
-        };
-        
-        fetchData()
-    }, [location])
+
+    const dispatch = useDispatch()
+    const { userstatus, user } = useSelector((state) => state.auth)
     
-    if (loading) {
+    useEffect(() => {
+        dispatch(getUser())
+    }, [location, dispatch])
+
+    if (userstatus == 'loading') {
         return 'loading ...';
     }
     
-    if (data === null) {
+    if (user === null) {
         return role === 'guest' ? <Component /> : <Navigate to="/login" />;
     }
     
@@ -35,7 +27,7 @@ export default function AuthGuard({ Component, role }) {
         return <Navigate to="/" />;
     }
     
-    if (data && data.role && data.role === role) {
+    if (user && user.role && user.role === role) {
         return <Component />;
     }
     

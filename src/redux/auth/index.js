@@ -6,7 +6,8 @@ export const authSlice = createSlice({
     initialState: {
         errorMessage: null,
         status: 'idle',
-        user: null
+        user: null,
+        userstatus : 'loading'
     },
     reducers: {
         setStatus: (state, action) => {
@@ -40,17 +41,15 @@ export const authSlice = createSlice({
         })
         //getUser
         .addCase(getUser.pending, (state) => {
-
-            state.status = 'loading'
+            state.userstatus = 'loading'
         })
         .addCase(getUser.fulfilled, (state, action) => {
-            state.status = 'success'
+            state.userstatus = 'success'
             state.user = action.payload
         })
         .addCase(getUser.rejected, (state, action) => {
-            state.status = 'failed'
+            state.userstatus = 'failed'
             state.user = null
-            state.errorMessage = action.payload
         })
     }
 })

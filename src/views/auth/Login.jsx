@@ -22,10 +22,8 @@ export default function Login(){
 
     useEffect(() => {
         if (status == 'success') {
-            // navigate('/')
-            // navigate('/', { replace: true })
-            window.location.href = '/'
-            // window.location.reload(true)
+            navigate('/', { replace: true })
+            window.location.reload(true)
             dispatch(setStatus('idle'))
         }
     }, [status])
